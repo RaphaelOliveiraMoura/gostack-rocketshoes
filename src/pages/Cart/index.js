@@ -1,7 +1,5 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   MdRemoveCircleOutline,
   MdAddCircleOutline,
@@ -12,13 +10,30 @@ import { Container, ProductTable, Total } from './styles';
 import * as CartActions from '../../store/modules/cart/actions';
 import { formatPrice } from '../../util/format';
 
-function Cart({ total, cart, removeFromCart, updateAmountRequest }) {
+export default function Cart() {
+  const cart = useSelector(state =>
+    state.cart.map(product => ({
+      ...product,
+      subtotal: formatPrice(product.price * product.amount),
+    }))
+  );
+
+  const total = useSelector(state =>
+    formatPrice(
+      state.cart.reduce((totalPrice, product) => {
+        return totalPrice + product.price * product.amount;
+      }, 0)
+    )
+  );
+
+  const dispatch = useDispatch();
+
   function increment(product) {
-    updateAmountRequest(product.id, product.amount + 1);
+    dispatch(CartActions.updateAmountRequest(product.id, product.amount + 1));
   }
 
   function decrement(product) {
-    updateAmountRequest(product.id, product.amount - 1);
+    dispatch(CartActions.updateAmountRequest(product.id, product.amount - 1));
   }
 
   return (
@@ -26,10 +41,12 @@ function Cart({ total, cart, removeFromCart, updateAmountRequest }) {
       <ProductTable>
         <thead>
           <tr>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <th />
             <th>PRODUTO</th>
             <th>QTD</th>
             <th>SUBTOTAL</th>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <th />
           </tr>
         </thead>
@@ -58,12 +75,13 @@ function Cart({ total, cart, removeFromCart, updateAmountRequest }) {
                 <strong>{product.subtotal}</strong>
               </td>
               <td>
-                <button type="button">
-                  <MdDelete
-                    size={20}
-                    color="#7159c1"
-                    onClick={() => removeFromCart(product.id)}
-                  />
+                <button
+                  type="button"
+                  onClick={() =>
+                    dispatch(CartActions.removeFromCart(product.id))
+                  }
+                >
+                  <MdDelete size={20} color="#7159c1" />
                 </button>
               </td>
             </tr>
@@ -82,30 +100,3 @@ function Cart({ total, cart, removeFromCart, updateAmountRequest }) {
     </Container>
   );
 }
-
-Cart.propTypes = {
-  cart: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  total: PropTypes.string.isRequired,
-  removeFromCart: PropTypes.func.isRequired,
-  updateAmountRequest: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = state => ({
-  cart: state.cart.map(product => ({
-    ...product,
-    subtotal: formatPrice(product.price * product.amount),
-  })),
-  total: formatPrice(
-    state.cart.reduce((total, product) => {
-      return total + product.price * product.amount;
-    }, 0)
-  ),
-});
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(CartActions, dispatch);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Cart);
