@@ -1,16 +1,15 @@
 import React from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import {StatusBar} from 'react-native';
 
 import './config/ReactotronConfig';
 
-const App = () => {
+import Routes from './routes';
+
+export default function App() {
   return (
     <>
-      <SafeAreaView>
-        <Text>Rocketshoes mobile</Text>
-      </SafeAreaView>
+      <StatusBar barStyle="light-content" backgroundColor="#141419" />
+      <Routes />
     </>
   );
-};
-
-export default App;
+}
