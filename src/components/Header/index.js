@@ -1,5 +1,16 @@
-import styled from 'styled-components/native';
+import React from 'react';
+import {View} from 'react-native';
 
-const Header = styled.View``;
+import {Container, Logo, CartIcon, CartAmount} from './styles';
 
-export default Header;
+export default function Header() {
+  return (
+    <Container>
+      <Logo />
+      <View>
+        <CartIcon />
+        <CartAmount>2</CartAmount>
+      </View>
+    </Container>
+  );
+}
