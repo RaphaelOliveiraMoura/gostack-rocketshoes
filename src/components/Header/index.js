@@ -1,16 +1,18 @@
 import React from 'react';
-import {View} from 'react-native';
+import {Image} from 'react-native';
 
-import {Container, Logo, CartIcon, CartAmount} from './styles';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import logo from '../../assets/logo.png';
+import {Container, Actions, CartAmount} from './styles';
 
 export default function Header() {
   return (
     <Container>
-      <Logo />
-      <View>
-        <CartIcon />
+      <Image source={logo} />
+      <Actions>
+        <Icon name="shopping-cart" size={20} color="#fff" />
         <CartAmount>2</CartAmount>
-      </View>
+      </Actions>
     </Container>
   );
 }

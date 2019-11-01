@@ -10,9 +10,7 @@ const Routes = createAppContainer(
       Home,
       Cart,
     },
-    {
-      headerMode: 'none',
-    }
+    {}
   )
 );
 
