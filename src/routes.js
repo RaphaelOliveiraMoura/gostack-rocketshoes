@@ -5,13 +5,10 @@ import Home from './pages/Home';
 import Cart from './pages/Cart';
 
 const Routes = createAppContainer(
-  createStackNavigator(
-    {
-      Home,
-      Cart,
-    },
-    {}
-  )
+  createStackNavigator({
+    Home,
+    Cart,
+  })
 );
 
 export default Routes;

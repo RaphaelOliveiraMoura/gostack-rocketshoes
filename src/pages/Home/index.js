@@ -63,7 +63,7 @@ const data = [
   },
 ];
 
-export default function Home() {
+export default function Home({navigation}) {
   return (
     <Container>
       <ProductsList>
